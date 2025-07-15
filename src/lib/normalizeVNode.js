@@ -1,4 +1,4 @@
-const isFalsy = (vNode) => vNode === null || typeof vNode === "undefined" || typeof vNode === "boolean";
+import { isFalsy } from "../utils/isFalsy";
 
 export function normalizeVNode(vNode) {
   if (isFalsy(vNode)) return "";
@@ -19,11 +19,11 @@ export function normalizeVNode(vNode) {
   }
 
   if (Array.isArray(vNode)) {
-    return vNode.filter((child) => !isFalsy(child)).flatMap((child) => normalizeVNode(child));
+    return vNode.flatMap((child) => normalizeVNode(child));
   }
 
   return {
     ...vNode,
-    children: safeChildren.filter((child) => !isFalsy(child)).flatMap((child) => normalizeVNode(child)),
+    children: safeChildren.flatMap((child) => normalizeVNode(child)),
   };
 }
