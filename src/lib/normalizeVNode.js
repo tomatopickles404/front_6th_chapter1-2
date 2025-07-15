@@ -4,8 +4,6 @@ export function normalizeVNode(vNode) {
   if (isFalsy(vNode)) return "";
   const safeChildren = vNode.children ?? [];
 
-  // console.log("vNode", vNode);
-
   if (typeof vNode === "string" || typeof vNode === "number") {
     return String(vNode);
   }
