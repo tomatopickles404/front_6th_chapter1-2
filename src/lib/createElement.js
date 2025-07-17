@@ -59,11 +59,21 @@ function updateAttributes($el, props) {
       continue;
     }
 
-    if (key === "className") {
-      $el.className = value;
+    // DOM 속성이 존재하면 DOM 속성으로 설정
+    if (key in $el) {
+      $el[key] = value;
       continue;
     }
 
-    $el.setAttribute(key, value);
+    // DOM 속성이 없으면 HTML 속성으로 설정
+    if (typeof value === "boolean") {
+      if (value) {
+        $el.setAttribute(key, "");
+      } else {
+        $el.removeAttribute(key);
+      }
+    } else {
+      $el.setAttribute(key, value);
+    }
   }
 }

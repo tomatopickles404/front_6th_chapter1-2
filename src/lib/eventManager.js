@@ -3,11 +3,16 @@ const eventHandlers = new WeakMap();
 const handleEvent = (event) => {
   const { target, type } = event;
 
-  const elementHandlers = eventHandlers.get(target);
+  let currentTarget = target;
+  while (currentTarget) {
+    const elementHandlers = eventHandlers.get(currentTarget);
+    if (elementHandlers && elementHandlers.has(type)) {
+      const handler = elementHandlers.get(type);
+      handler(event);
+      break;
+    }
 
-  if (elementHandlers && elementHandlers.has(type)) {
-    const handler = elementHandlers.get(type);
-    handler(event);
+    currentTarget = currentTarget.parentElement;
   }
 };
 
@@ -29,9 +34,7 @@ export function addEvent(element, eventType, handler) {
   if (!eventHandlers.has(element)) {
     eventHandlers.set(element, new Map());
   }
-
-  const elementHandlers = eventHandlers.get(element);
-  elementHandlers.set(eventType, handler);
+  eventHandlers.get(element).set(eventType, handler);
 }
 
 export function removeEvent(element, eventType) {
