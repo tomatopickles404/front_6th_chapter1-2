@@ -14,10 +14,6 @@ const handleEvent = (event) => {
       if (elementHandlers && elementHandlers.has(type)) {
         const handler = elementHandlers.get(type);
         handler(event);
-
-        if (event.stopPropagation) {
-          event.stopPropagation();
-        }
       }
     }
     currentElement = currentElement.parentElement;
